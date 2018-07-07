@@ -1,0 +1,111 @@
+﻿@model IEnumerable<SalesInfoMVC.Models.SaleInfo>
+
+@{
+    ViewBag.Title = "Sales list";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<table>
+    <tr>
+        <td>@Html.DropDownList("SDateDDLChange", new SelectList(Model, "Date", "Date"), "Select date...", new { onchange = "onSDateDDLChange()" })</td>
+        <td>@Html.DropDownList("SManagerDDLChange", new SelectList(Model.Select(s => s.Manager).Distinct()), "Select manager...", new { onchange = "onSManagerDDLChange()" })</td>
+        <td>@Html.DropDownList("SClientDDLChange", new SelectList(Model.Select(s => s.Client).Distinct()), "Select client...", new { onchange = "onSClientDDLChange()" })</td>
+        <td>@Html.DropDownList("SProductDDLChange", new SelectList(Model.Select(s => s.Product).Distinct()), "Select product...", new { onchange = "onSProductDDLChange()" })</td>
+    </tr>
+</table>
+
+<section id="saleSection">
+    <div id="saleEdit">
+    </div>
+</section>
+
+<section id="salesListSection">
+    <div id="salesList">
+    </div>
+</section>
+<br />
+<div>
+    @Html.ActionLink("Back to full list", "Sales")
+</div>
+
+<script type="text/javascript">
+    showSaleEdit = function () {
+        $("#saleEdit").show();
+    }
+
+    hideSaleEdit = function () {
+        $("#saleEdit").hide();
+        $("#saleEdit").html(null);
+    }
+
+    onSaleListLoad = function () {
+        $.get('@Url.Action("SalesList", "Home")', null,
+           function (data, textStatus, jqXHR) {
+               $("#salesList").html(data);
+           });
+    }
+
+    onSaleListLoad();
+
+    showSelectedSDate = function (sDate) {
+        $.get('@Url.Action("ShowSDate", "Home")', { saleDate: sDate },
+           function (data, textStatus, jqXHR) {
+               $("#salesList").html(data);
+               $("#salesList").show();
+           });
+    }
+
+    onSDateDDLChange = function () {
+        var x = document.getElementById("SDateDDLChange").value;
+        var day = x.substr(0, 3);
+        var month = x.substr(3, 3);
+        var last = x.substr(6);
+        var x = month.concat(day, last);
+        // uuuuuuuuhh...
+        $("#salesList").html(null);
+        showSelectedSDate(x);
+    }
+
+    showSelectedSManager = function (sManager) {
+        $.get('@Url.Action("ShowSManager", "Home")', { saleManager: sManager },
+           function (data, textStatus, jqXHR) {
+               $("#salesList").html(data);
+               $("#salesList").show();
+           });
+    }
+
+    onSManagerDDLChange = function () {
+        var x = document.getElementById("SManagerDDLChange").value;
+        $("#salesList").html(null);
+        showSelectedSManager(x);
+    }
+
+    showSelectedSClient = function (sClient) {
+        $.get('@Url.Action("ShowSClient", "Home")', { saleClient: sClient },
+           function (data, textStatus, jqXHR) {
+               $("#salesList").html(data);
+               $("#salesList").show();
+           });
+    }
+
+    onSClientDDLChange = function () {
+        var x = document.getElementById("SClientDDLChange").value;
+        $("#salesList").html(null);
+        showSelectedSClient(x);
+    }
+
+    showSelectedSProduct = function (sProduct) {
+        $.get('@Url.Action("ShowSProduct", "Home")', { saleProduct: sProduct },
+           function (data, textStatus, jqXHR) {
+               $("#salesList").html(data);
+               $("#salesList").show();
+           });
+    }
+
+    onSProductDDLChange = function () {
+        var x = document.getElementById("SProductDDLChange").value;
+        $("#salesList").html(null);
+        showSelectedSProduct(x);
+    }
+</script>

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SalesInfoMVC.Models.SaleInfo>
+
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Date</th>
+        <th>Manager</th>
+        <th>Client</th>
+        <th>Product</th>
+        <th>Amount</th>
+    </tr>
+    @foreach (var sale in Model)
+            {
+        <tr>
+            <td>@Html.DisplayFor(s => sale.Id)</td>
+            <td>@Html.DisplayFor(s => sale.Date)</td>
+            <td>@Html.DisplayFor(s => sale.Manager)</td>
+            <td>@Html.DisplayFor(s => sale.Client)</td>
+            <td>@Html.DisplayFor(s => sale.Product)</td>
+            <td>@Html.DisplayFor(s => sale.Amount)</td>
+            <td><button type="button" onclick="onSaleEdit(@sale.Id)">Edit</button></td>
+        </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    onSaleEdit = function (saleId) {
+        $.get('@Url.Action("SaleEdit", "Home")', { id: saleId }, function (data, textStatus, XHR) {
+                               $("#saleEdit").html(data);
+                               showSaleEdit();
+                            })
+    }
+</script>

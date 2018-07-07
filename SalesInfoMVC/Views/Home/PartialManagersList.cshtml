@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SalesInfoMVC.Models.Manager>
+
+<table>
+    <tr>
+        <th style="border: solid medium red">Id</th>
+        <th style="border: solid medium red">Manager</th>
+    </tr>
+    @foreach (var manager in Model)
+            {
+        <tr>
+            <td style="border: solid thin blue">@Html.DisplayFor(m => manager.Id)</td>
+            <td style="border: solid thin blue">@Html.DisplayFor(m => manager.SecondName)</td>
+            <td><button type="button" onclick="onManagerEdit(@manager.Id)">Edit</button></td>
+        </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    onManagerEdit = function (managerId) {
+        $.get('@Url.Action("ManagerEdit", "Home")', { id: managerId }, function (data, textStatus, XHR) {
+                               $("#managerEdit").html(data);
+                               showManagerEdit();
+                            })
+    }
+</script>

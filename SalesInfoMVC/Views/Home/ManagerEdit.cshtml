@@ -1,0 +1,49 @@
+﻿@model SalesInfoMVC.Models.Manager
+
+@{
+    ViewBag.Title = "Manager edit";
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Manager edit</legend>
+        @Html.HiddenFor(model => model.Id)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SecondName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SecondName)
+            @Html.ValidationMessageFor(model => model.SecondName)
+        </div>
+        <p>
+            <input id="saveButton" type="submit" value="Save" />
+            <input id="cancelButton" type="reset" value="Cancel" />
+        </p>
+    </fieldset>
+}
+
+<script type="text/javascript">
+    onManagerSave = function () {
+        $("form").on("submit", function (e) {
+                         e.preventDefault();
+                         $.post('@Url.Action("ManagerEdit", "Home")', $("form").serialize(), function (data, textStatus, jHXR) {
+                                    hideManagerEdit();
+                                    onManagerListLoad();
+                                });
+                     });
+    }
+
+    onManagerCancel = function () {
+        $("form").on("reset", function () { hideManagerEdit(); onManagerListLoad(); });
+    }
+
+    $("#saveButton").click(onManagerSave);
+    $("#cancelButton").click(onManagerCancel);
+</script>

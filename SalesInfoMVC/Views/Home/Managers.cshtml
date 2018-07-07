@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SalesInfoMVC.Models.Manager>
+
+@{
+    ViewBag.Title = "Managers list";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<div>
+    @Html.DropDownList("ManagerDDLChange", new SelectList(Model, "Id", "SecondName"), "Select manager...", new { onchange = "onManagerDDLChange()" })
+</div>
+
+<section id="managerSection">
+    <div id="managerEdit">
+    </div>
+</section>
+
+<section id="managerListSection">
+    <div id="managerList">
+    </div>
+</section>
+<br />
+<div>
+    @Html.ActionLink("Back to full list", "Managers")
+</div>
+
+<script type="text/javascript">
+    showManagerEdit = function () {
+        $("#managerEdit").show();
+    }
+
+    hideManagerEdit = function () {
+        $("#managerEdit").hide();
+        $("#managerEdit").html(null);
+    }
+
+    onManagerListLoad = function () {
+        $.get('@Url.Action("ManagerList", "Home")', null,
+           function (data, textStatus, jqXHR) {
+               $("#managerList").html(data);
+           });
+    }
+
+    onManagerListLoad();
+
+    showSelectedManager = function (managerId) {
+        $.get('@Url.Action("ShowManager", "Home")', { id: managerId },
+           function (data, textStatus, jqXHR) {
+               $("#managerList").html(data);
+               $("#managerList").show();
+           });
+    }
+
+    onManagerDDLChange = function () {
+        var x = document.getElementById("ManagerDDLChange").value;
+        $("#managerList").html(null);
+        showSelectedManager(x);
+    }
+</script>
