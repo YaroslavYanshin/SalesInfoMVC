@@ -60,7 +60,7 @@ namespace SalesInfoMVC.Controllers
         //
         // GET: /Account/Register
 
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -71,7 +71,7 @@ namespace SalesInfoMVC.Controllers
         // POST: /Account/Register
 
         [HttpPost]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
