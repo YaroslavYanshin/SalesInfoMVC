@@ -285,6 +285,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Scripts\_references.js" />

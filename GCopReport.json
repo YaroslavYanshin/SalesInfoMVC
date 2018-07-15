@@ -13,6 +13,13 @@
       "Exceptions": null,
       "SentToServer": true,
       "InstallationName": "YAROSLAV"
+    },
+    {
+      "Analyzer": "ConstantVariableAnalyzer",
+      "OccurrenceCount": 1,
+      "Exceptions": null,
+      "SentToServer": true,
+      "InstallationName": "YAROSLAV"
     }
   ]
 }
