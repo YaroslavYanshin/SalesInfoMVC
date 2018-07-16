@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Web.Security;
 
 namespace SalesInfoMVC.Models
 {
@@ -12,6 +13,7 @@ namespace SalesInfoMVC.Models
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 
     [Table("UserProfile")]
@@ -21,6 +23,34 @@ namespace SalesInfoMVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string Password { get; set; }
+
+
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
+    }
+
+    public class Role
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class UserDbInitializer:DropCreateDatabaseAlways<UsersContext>
+    {
+        protected override void Seed(UsersContext db)
+        {
+            db.Roles.Add(new Role { Id = 1, Name = "admin" });
+            db.Roles.Add(new Role { Id = 2, Name = "user" });
+            db.UserProfiles.Add(new UserProfile
+            {
+                UserId = 1,
+                UserName = " administrator",
+                Password = " administrator",
+                RoleId = 1
+            });
+            base.Seed(db);
+        }
     }
 
     public class RegisterExternalLoginModel
@@ -73,7 +103,7 @@ namespace SalesInfoMVC.Models
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 4)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -82,6 +112,8 @@ namespace SalesInfoMVC.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public int RoleId { get; set; }
     }
 
     public class ExternalLogin
